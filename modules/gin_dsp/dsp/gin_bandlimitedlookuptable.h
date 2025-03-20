@@ -90,7 +90,7 @@ public:
    #if GIN_HAS_SIMD
     inline mipp::Reg<float> process (float note, mipp::Reg<float> phase)
     {
-        static_assert (mipp::N<float>() == 4);
+        static_assert (mipp::M<float>() == 4);
 
         auto& table = tableForNote (note);
         phase *= float (tableSize);
@@ -115,7 +115,7 @@ public:
     
     inline mipp::Reg<float> processLinear (float note, mipp::Reg<float> phase)
     {
-        static_assert (mipp::N<float>() == 4);
+        static_assert (mipp::M<float>() == 4);
 
         auto& table = tableForNote (note);
         auto pos = mipp::trunc (phase * float (tableSize));

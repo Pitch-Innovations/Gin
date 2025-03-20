@@ -82,7 +82,7 @@ public:
                     {
                         lastAtom->atomText += first->atomText;
                         lastAtom->numChars = (uint16_t) (lastAtom->numChars + first->numChars);
-                        lastAtom->width = juce::GlyphArrangement::getStringWidth ( font, lastAtom->getText());
+                        lastAtom->width = font.getStringWidthFloat(lastAtom->getText());
                         delete first;
                         ++i;
                     }
@@ -125,13 +125,13 @@ public:
                 TextAtom* const secondAtom = new TextAtom();
 
                 secondAtom->atomText = atom->atomText.substring (indexToBreakAt - index);
-                secondAtom->width = juce::GlyphArrangement::getStringWidth ( font, secondAtom->getText());
+                secondAtom->width = font.getStringWidthFloat(secondAtom->getText());
                 secondAtom->numChars = (uint16_t) secondAtom->atomText.length();
 
                 section2->atoms.add (secondAtom);
 
                 atom->atomText = atom->atomText.substring (0, indexToBreakAt - index);
-                atom->width = juce::GlyphArrangement::getStringWidth ( font, atom->getText());
+                atom->width = font.getStringWidthFloat(atom->getText());
                 atom->numChars = (uint16_t) (indexToBreakAt - index);
 
                 for (int j = i + 1; j < atoms.size(); ++j)
@@ -195,7 +195,7 @@ public:
             for (int i = atoms.size(); --i >= 0;)
             {
                 TextAtom* const atom = atoms.getUnchecked(i);
-                atom->width = juce::GlyphArrangement::getStringWidth (newFont, atom->getText());
+                atom->width = newFont.getStringWidthFloat(atom->getText());
             }
         }
     }
@@ -256,7 +256,7 @@ private:
             TextAtom* const atom = atoms.add (new TextAtom());
 
             atom->atomText = juce::String (start, numChars);
-            atom->width = juce::GlyphArrangement::getStringWidth (font, atom->getText());
+            atom->width = font.getStringWidthFloat(atom->getText());
             atom->numChars = (uint16_t) numChars;
         }
     }
@@ -865,7 +865,7 @@ SingleLineTextEditor::SingleLineTextEditor (const juce::String& name)
       valueTextNeedsUpdating (false),
       consumeEscAndReturnKeys (true),
       lastTransactionTime (0),
-      currentFont (juce::FontOptions (14.0f)),
+      currentFont (juce::Font (14.0f)),
       totalNumChars (0),
       caretPosition (0),
       keyboardType (TextInputTarget::textKeyboard),

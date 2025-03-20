@@ -436,7 +436,7 @@ constexpr int32_t nElReg()
 }
 
 template <typename T>
-constexpr int32_t N()
+constexpr int32_t M()
 {
 #ifndef MIPP_NO_INTRINSICS
     return mipp::nElReg<T>();
@@ -1009,13 +1009,13 @@ template <typename T, proto_il<T> IL = mipp::loadu<T>, proto_is<T> IS = mipp::st
 inline reg maskzlds(const msk m, const T* memp)
 {
 #ifndef MIPP_NO
-    alignas(alignof(mipp::reg)) T mask[mipp::N<T>()], data[mipp::N<T>()];
+    alignas(alignof(mipp::reg)) T mask[mipp::M<T>()], data[mipp::M<T>()];
 #else
-    T mask[mipp::N<T>()], data[mipp::N<T>()];
+    T mask[mipp::M<T>()], data[mipp::M<T>()];
 #endif
     auto rm = toreg<N<T>()>(m);
     IS(mask, rm);
-    for (int i = 0; i < mipp::N<T>(); i++)
+    for (int i = 0; i < mipp::M<T>(); i++)
         data[i] = mask[i] != (T)0 ? memp[i] : (T)0;
     return IL(data);
 }
@@ -1032,14 +1032,14 @@ template <typename T, proto_is<T> IS = mipp::storeu<T>>
 inline void masksts(const msk m, T* memp, const reg a)
 {
 #ifndef MIPP_NO
-    alignas(alignof(mipp::reg)) T mask[mipp::N<T>()], data[mipp::N<T>()];
+    alignas(alignof(mipp::reg)) T mask[mipp::M<T>()], data[mipp::M<T>()];
 #else
-    T mask[mipp::N<T>()], data[mipp::N<T>()];
+    T mask[mipp::M<T>()], data[mipp::M<T>()];
 #endif
     auto rm = toreg<N<T>()>(m);
     IS(mask, rm);
     IS(data, a);
-    for (int i = 0; i < mipp::N<T>(); i++)
+    for (int i = 0; i < mipp::M<T>(); i++)
         if (mask[i] != (T)0)
             memp[i] = data[i];
 }
@@ -1161,10 +1161,10 @@ template <typename T, proto_IL<T> IL = mipp::oloadu<T>, proto_IS<T> IS = mipp::s
 inline Reg<T> maskzlds(const Msk<N<T>()> m, const T* memp)
 {
 #ifndef MIPP_NO
-    alignas(alignof(mipp::reg)) T mask[mipp::N<T>()], data[mipp::N<T>()];
+    alignas(alignof(mipp::reg)) T mask[mipp::M<T>()], data[mipp::M<T>()];
     auto rm = m.template toReg<T>();
     IS(mask, rm);
-    for (int i = 0; i < mipp::N<T>(); i++)
+    for (int i = 0; i < mipp::M<T>(); i++)
         data[i] = mask[i] != (T)0 ? memp[i] : (T)0;
     return IL(data);
 #else
@@ -1188,11 +1188,11 @@ template <typename T, proto_IS<T> IS = mipp::storeu<T>>
 inline void masksts(const Msk<N<T>()> m, T* memp, const Reg<T> a)
 {
 #ifndef MIPP_NO
-    alignas(alignof(mipp::reg)) T mask[mipp::N<T>()], data[mipp::N<T>()];
+    alignas(alignof(mipp::reg)) T mask[mipp::M<T>()], data[mipp::M<T>()];
     auto rm = m.template toReg<T>();
     IS(mask, rm);
     IS(data, a);
-    for (int i = 0; i < mipp::N<T>(); i++)
+    for (int i = 0; i < mipp::M<T>(); i++)
         if (mask[i] != (T)0)
             memp[i] = data[i];
 #else
@@ -1228,9 +1228,9 @@ inline void masksca(const Msk<N<TD>()> m, TD* memp, const Reg<TI> idx, const Reg
 template <typename T>
 T get(const mipp::reg r, const size_t index)
 {
-    T tmp[mipp::N<T>()];
+    T tmp[mipp::M<T>()];
     mipp::storeu<T>(tmp, r);
-    return tmp[index % mipp::N<T>()];
+    return tmp[index % mipp::M<T>()];
 }
 
 template <typename T>
@@ -1238,9 +1238,9 @@ T get(const mipp::reg_2 r, const size_t index)
 {
     mipp::reg_2 rosef = r;
     auto r_full = mipp::combine<T>(r, rosef);
-    T tmp[mipp::N<T>()];
+    T tmp[mipp::M<T>()];
     mipp::storeu<T>(tmp, r_full);
-    return tmp[index % (mipp::N<T>()/2)];
+    return tmp[index % (mipp::M<T>()/2)];
 }
 
 template <int N>
@@ -1279,11 +1279,11 @@ bool getfirst(const mipp::msk m)
 template <typename T>
 void dump(const mipp::reg r, std::ostream &stream = std::cout, const uint32_t elmtWidth = 6)
 {
-    constexpr int32_t lane_size = (int32_t)(mipp::N<T>() / mipp::Lanes);
+    constexpr int32_t lane_size = (int32_t)(mipp::M<T>() / mipp::Lanes);
 
 //  const T* data = (T*)&r;
 #ifdef MIPP_ALIGNED_LOADS
-    T* data = malloc<T>(mipp::N<T>());
+    T* data = malloc<T>(mipp::M<T>());
 #else
     T data[mipp::nElReg<T>()];
 #endif
@@ -1541,7 +1541,7 @@ template <typename T> inline T hmax(const reg v) { return reduction<T,mipp::max<
 
 template <typename TD, typename TI>
 inline reg gather_seq(const TD *mem_addr, const reg idx) {
-    constexpr int N = mipp::N<TI>();
+    constexpr int N = mipp::M<TI>();
     TI indexes[N];
     mipp::storeu<TI>(indexes, idx);
     TD data[N];
@@ -1552,7 +1552,7 @@ inline reg gather_seq(const TD *mem_addr, const reg idx) {
 
 template <typename TD, typename TI>
 inline void scatter_seq(TD *mem_addr, const reg idx, const reg r) {
-    constexpr int N = mipp::N<TI>();
+    constexpr int N = mipp::M<TI>();
     TI indexes[N];
     TD data[N];
     mipp::storeu<TI>(indexes, idx);
