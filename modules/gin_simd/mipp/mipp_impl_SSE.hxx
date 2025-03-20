@@ -2007,22 +2007,22 @@
 
     template <>
     inline msk cmpneq<int64_t>(const reg v1, const reg v2) {
-        return notb<N<int64_t>()>(cmpeq<int64_t>(v1, v2));
+        return notb<M<int64_t>()>(cmpeq<int64_t>(v1, v2));
     }
 
     template <>
     inline msk cmpneq<int32_t>(const reg v1, const reg v2) {
-        return notb<N<int32_t>()>(cmpeq<int32_t>(v1, v2));
+        return notb<M<int32_t>()>(cmpeq<int32_t>(v1, v2));
     }
 
     template <>
     inline msk cmpneq<int16_t>(const reg v1, const reg v2) {
-        return andnb<N<int16_t>()>(cmpeq<int16_t>(v1, v2), _mm_castps_si128(set1<int16_t>(static_cast<int16_t>(0xFFFF))));
+        return andnb<M<int16_t>()>(cmpeq<int16_t>(v1, v2), _mm_castps_si128(set1<int16_t>(static_cast<int16_t>(0xFFFF))));
     }
 
     template <>
     inline msk cmpneq<int8_t>(const reg v1, const reg v2) {
-        return andnb<N<int8_t>()>(cmpeq<int8_t>(v1, v2), _mm_castps_si128(set1<int8_t>(static_cast<int8_t>(0xFF))));
+        return andnb<M<int8_t>()>(cmpeq<int8_t>(v1, v2), _mm_castps_si128(set1<int8_t>(static_cast<int8_t>(0xFF))));
     }
 #endif
 
