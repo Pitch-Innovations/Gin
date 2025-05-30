@@ -1068,7 +1068,7 @@ class Reg;
 template <int N>
 class Msk;
 
-template <typename T> inline Reg<T> blend (const Reg<T> v1, const Reg<T> v2, const Msk<N<T>()> m);
+template <typename T> inline Reg<T> blend (const Reg<T> v1, const Reg<T> v2, const Msk<M<T>()> m);
 template <typename T> inline Reg<T> andb  (const Reg<T> v1, const Reg<T> v2);
 template <typename T> inline Reg<T> oloadu(const T* memp);
 template <typename T> inline void   storeu(      T* memp, const Reg<T> v1);
@@ -1080,7 +1080,7 @@ template <typename T> using proto_IL = Reg<T> (*)(const T*);
 template <typename T> using proto_IS = void (*)(T*, const Reg<T>);
 
 template <typename T, proto_I1<T> I1>
-inline Reg<T> mask(const Msk<N<T>()> m, const Reg<T> src, const Reg<T> a)
+inline Reg<T> mask(const Msk<M<T>()> m, const Reg<T> src, const Reg<T> a)
 {
 #ifndef MIPP_NO
     return blend<T>(I1(a), src, m);
@@ -1090,7 +1090,7 @@ inline Reg<T> mask(const Msk<N<T>()> m, const Reg<T> src, const Reg<T> a)
 }
 
 template <typename T, proto_I2<T> I2>
-inline Reg<T> mask(const Msk<N<T>()> m, const Reg<T> src, const Reg<T> a, const Reg<T> b)
+inline Reg<T> mask(const Msk<M<T>()> m, const Reg<T> src, const Reg<T> a, const Reg<T> b)
 {
 #ifndef MIPP_NO
     return blend<T>(I2(a, b), src, m);
@@ -1100,7 +1100,7 @@ inline Reg<T> mask(const Msk<N<T>()> m, const Reg<T> src, const Reg<T> a, const 
 }
 
 template <typename T, proto_I3<T> I3>
-inline Reg<T> mask(const Msk<N<T>()> m, const Reg<T> src, const Reg<T> a, const Reg<T> b, const Reg<T> c)
+inline Reg<T> mask(const Msk<M<T>()> m, const Reg<T> src, const Reg<T> a, const Reg<T> b, const Reg<T> c)
 {
 #ifndef MIPP_NO
     return blend<T>(I3(a, b, c), src, m);
@@ -1110,7 +1110,7 @@ inline Reg<T> mask(const Msk<N<T>()> m, const Reg<T> src, const Reg<T> a, const 
 }
 
 template <typename T, proto_I1<T> I1>
-inline Reg<T> maskz(const Msk<N<T>()> m, const Reg<T> a)
+inline Reg<T> maskz(const Msk<M<T>()> m, const Reg<T> a)
 {
 #ifndef MIPP_NO
     auto m_reg = m.template toReg<T>();
@@ -1122,7 +1122,7 @@ inline Reg<T> maskz(const Msk<N<T>()> m, const Reg<T> a)
 }
 
 template <typename T, proto_I2<T> I2>
-inline Reg<T> maskz(const Msk<N<T>()> m, const Reg<T> a, const Reg<T> b)
+inline Reg<T> maskz(const Msk<M<T>()> m, const Reg<T> a, const Reg<T> b)
 {
 #ifndef MIPP_NO
     auto m_reg = m.template toReg<T>();
@@ -1134,7 +1134,7 @@ inline Reg<T> maskz(const Msk<N<T>()> m, const Reg<T> a, const Reg<T> b)
 }
 
 template <typename T, proto_I3<T> I3>
-inline Reg<T> maskz(const Msk<N<T>()> m, const Reg<T> a, const Reg<T> b, const Reg<T> c)
+inline Reg<T> maskz(const Msk<M<T>()> m, const Reg<T> a, const Reg<T> b, const Reg<T> c)
 {
 #ifndef MIPP_NO
     auto m_reg = m.template toReg<T>();
@@ -1146,7 +1146,7 @@ inline Reg<T> maskz(const Msk<N<T>()> m, const Reg<T> a, const Reg<T> b, const R
 }
 
 template <typename T, proto_IL<T> IL = mipp::oloadu<T>>
-inline Reg<T> maskzld(const Msk<N<T>()> m, const T* memp)
+inline Reg<T> maskzld(const Msk<M<T>()> m, const T* memp)
 {
 #ifndef MIPP_NO
     auto rl = IL(memp);
@@ -1158,7 +1158,7 @@ inline Reg<T> maskzld(const Msk<N<T>()> m, const T* memp)
 }
 
 template <typename T, proto_IL<T> IL = mipp::oloadu<T>, proto_IS<T> IS = mipp::storeu<T>>
-inline Reg<T> maskzlds(const Msk<N<T>()> m, const T* memp)
+inline Reg<T> maskzlds(const Msk<M<T>()> m, const T* memp)
 {
 #ifndef MIPP_NO
     alignas(alignof(mipp::reg)) T mask[mipp::M<T>()], data[mipp::M<T>()];
@@ -1173,7 +1173,7 @@ inline Reg<T> maskzlds(const Msk<N<T>()> m, const T* memp)
 }
 
 template <typename T, proto_IS<T> IS = mipp::storeu<T>, proto_IL<T> IL = mipp::oloadu<T>>
-inline void maskst(const Msk<N<T>()> m, T* memp, const Reg<T> a)
+inline void maskst(const Msk<M<T>()> m, T* memp, const Reg<T> a)
 {
 #ifndef MIPP_NO
     auto rl = IL(memp);
@@ -1185,7 +1185,7 @@ inline void maskst(const Msk<N<T>()> m, T* memp, const Reg<T> a)
 }
 
 template <typename T, proto_IS<T> IS = mipp::storeu<T>>
-inline void masksts(const Msk<N<T>()> m, T* memp, const Reg<T> a)
+inline void masksts(const Msk<M<T>()> m, T* memp, const Reg<T> a)
 {
 #ifndef MIPP_NO
     alignas(alignof(mipp::reg)) T mask[mipp::M<T>()], data[mipp::M<T>()];
@@ -1201,7 +1201,7 @@ inline void masksts(const Msk<N<T>()> m, T* memp, const Reg<T> a)
 }
 
 template <typename TD, typename TI>
-inline Reg<TD> maskzgat(const Msk<N<TD>()> m, const TD* memp, const Reg<TI> idx)
+inline Reg<TD> maskzgat(const Msk<M<TD>()> m, const TD* memp, const Reg<TI> idx)
 {
 #ifndef MIPP_NO
     return Reg<TD>(mipp::maskzgat<TD,TI>(m.m, memp, idx.r));
@@ -1211,7 +1211,7 @@ inline Reg<TD> maskzgat(const Msk<N<TD>()> m, const TD* memp, const Reg<TI> idx)
 }
 
 template <typename TD, typename TI>
-inline void masksca(const Msk<N<TD>()> m, TD* memp, const Reg<TI> idx, const Reg<TD> r)
+inline void masksca(const Msk<M<TD>()> m, TD* memp, const Reg<TI> idx, const Reg<TD> r)
 {
 #ifndef MIPP_NO
     mipp::masksca<TD,TI>(m.m, memp, idx.r, r.r);

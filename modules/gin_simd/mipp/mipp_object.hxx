@@ -776,7 +776,7 @@ template <typename T> inline Reg<T>      oload        (const T* in)             
 template <typename T> inline Reg<T>      oloadu       (const T* in)                                           { Reg<T> r; r.loadu(in); return r; }
 template <typename T> inline void        store        (T* out, const Reg<T> v)                                { v.store (out);                   }
 template <typename T> inline void        storeu       (T* out, const Reg<T> v)                                { v.storeu(out);                   }
-template <typename T> inline Reg<T>      oset         (const T in[N<T>()])                                    { Reg<T> r; r.set(in);   return r; }
+template <typename T> inline Reg<T>      oset         (const T in[M<T>()])                                    { Reg<T> r; r.set(in);   return r; }
 #ifdef _MSC_VER
 template <int      N> inline Msk<N>      oset         (const bool in[])                                       { Msk<N> m; m.set(in);   return m; }
 #else
@@ -815,34 +815,34 @@ template <typename T> inline Reg<T>      interleavex4 (const Reg<T> v)          
 template <typename T> inline Reg<T>      interleavex16(const Reg<T> v)                                        { return v.interleavex16();        }
 template <typename T> inline Reg<T>      andb         (const Reg<T> v1, const Reg<T> v2)                      { return v1.andb(v2);              }
 template <int      N> inline Msk<N>      andb         (const Msk<N> v1, const Msk<N> v2)                      { return v1.andb(v2);              }
-template <typename T> inline Reg<T>      andb         (const Reg<T> v1, const Msk<N<T>()> v2)                 { return v1.andb(v2);              }
-template <typename T> inline Reg<T>      andb         (const Msk<N<T>()> v1, const Reg<T> v2)                 { return v1.andb(v2);              }
+template <typename T> inline Reg<T>      andb         (const Reg<T> v1, const Msk<M<T>()> v2)                 { return v1.andb(v2);              }
+template <typename T> inline Reg<T>      andb         (const Msk<M<T>()> v1, const Reg<T> v2)                 { return v1.andb(v2);              }
 template <typename T> inline Reg<T>      andnb        (const Reg<T> v1, const Reg<T>v2)                       { return v1.andnb(v2);             }
 template <int      N> inline Msk<N>      andnb        (const Msk<N> v1, const Msk<N>v2)                       { return v1.andnb(v2);             }
-template <typename T> inline Reg<T>      andnb        (const Reg<T> v1, const Msk<N<T>()> v2)                 { return v1.andnb(v2);             }
-template <typename T> inline Reg<T>      andnb        (const Msk<N<T>()> v1, const Reg<T> v2)                 { return v1.andnb(v2);             }
+template <typename T> inline Reg<T>      andnb        (const Reg<T> v1, const Msk<M<T>()> v2)                 { return v1.andnb(v2);             }
+template <typename T> inline Reg<T>      andnb        (const Msk<M<T>()> v1, const Reg<T> v2)                 { return v1.andnb(v2);             }
 template <typename T> inline Reg<T>      notb         (const Reg<T> v)                                        { return v.notb();                 }
 template <int      N> inline Msk<N>      notb         (const Msk<N> v)                                        { return v.notb();                 }
 template <typename T> inline Reg<T>      orb          (const Reg<T> v1, const Reg<T> v2)                      { return v1.orb(v2);               }
 template <int      N> inline Msk<N>      orb          (const Msk<N> v1, const Msk<N> v2)                      { return v1.orb(v2);               }
-template <typename T> inline Reg<T>      orb          (const Reg<T> v1, const Msk<N<T>()> v2)                 { return v1.orb(v2);               }
-template <typename T> inline Reg<T>      orb          (const Msk<N<T>()> v1, const Reg<T> v2)                 { return v1.orb(v2);               }
+template <typename T> inline Reg<T>      orb          (const Reg<T> v1, const Msk<M<T>()> v2)                 { return v1.orb(v2);               }
+template <typename T> inline Reg<T>      orb          (const Msk<M<T>()> v1, const Reg<T> v2)                 { return v1.orb(v2);               }
 template <typename T> inline Reg<T>      xorb         (const Reg<T> v1, const Reg<T> v2)                      { return v1.xorb(v2);              }
 template <int      N> inline Msk<N>      xorb         (const Msk<N> v1, const Msk<N> v2)                      { return v1.xorb(v2);              }
-template <typename T> inline Reg<T>      xorb         (const Reg<T> v1, const Msk<N<T>()> v2)                 { return v1.xorb(v2);              }
-template <typename T> inline Reg<T>      xorb         (const Msk<N<T>()> v1, const Reg<T> v2)                 { return v1.xorb(v2);              }
+template <typename T> inline Reg<T>      xorb         (const Reg<T> v1, const Msk<M<T>()> v2)                 { return v1.xorb(v2);              }
+template <typename T> inline Reg<T>      xorb         (const Msk<M<T>()> v1, const Reg<T> v2)                 { return v1.xorb(v2);              }
 template <typename T> inline Reg<T>      lshift       (const Reg<T> v,  const uint32_t n)                     { return v.lshift(n);              }
 template <typename T> inline Reg<T>      lshiftr      (const Reg<T> v1, const Reg<T> v2)                      { return v1.lshiftr(v2);           }
 template <int      N> inline Msk<N>      lshift       (const Msk<N> v,  const uint32_t n)                     { return v.lshift(n);              }
 template <typename T> inline Reg<T>      rshift       (const Reg<T> v,  const uint32_t n)                     { return v.rshift(n);              }
 template <typename T> inline Reg<T>      rshiftr      (const Reg<T> v1, const Reg<T> v2)                      { return v1.rshiftr(v2);           }
 template <int      N> inline Msk<N>      rshift       (const Msk<N> v,  const uint32_t n)                     { return v.rshift(n);              }
-template <typename T> inline Msk<N<T>()> cmpeq        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpeq(v2);             }
-template <typename T> inline Msk<N<T>()> cmpneq       (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpneq(v2);            }
-template <typename T> inline Msk<N<T>()> cmplt        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmplt(v2);             }
-template <typename T> inline Msk<N<T>()> cmple        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmple(v2);             }
-template <typename T> inline Msk<N<T>()> cmpgt        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpgt(v2);             }
-template <typename T> inline Msk<N<T>()> cmpge        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpge(v2);             }
+template <typename T> inline Msk<M<T>()> cmpeq        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpeq(v2);             }
+template <typename T> inline Msk<M<T>()> cmpneq       (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpneq(v2);            }
+template <typename T> inline Msk<M<T>()> cmplt        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmplt(v2);             }
+template <typename T> inline Msk<M<T>()> cmple        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmple(v2);             }
+template <typename T> inline Msk<M<T>()> cmpgt        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpgt(v2);             }
+template <typename T> inline Msk<M<T>()> cmpge        (const Reg<T> v1, const Reg<T> v2)                      { return v1.cmpge(v2);             }
 template <typename T> inline Reg<T>      add          (const Reg<T> v1, const Reg<T> v2)                      { return v1.add(v2);               }
 template <typename T> inline Reg<T>      sub          (const Reg<T> v1, const Reg<T> v2)                      { return v1.sub(v2);               }
 template <typename T> inline Reg<T>      mul          (const Reg<T> v1, const Reg<T> v2)                      { return v1.mul(v2);               }
