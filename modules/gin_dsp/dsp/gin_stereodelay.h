@@ -118,6 +118,11 @@ public:
         feedback.setTargetValue (std::min (0.99f, feedback_));
         crossfeed.setTargetValue (std::min (0.99f, crossfeed_));
     }
+    
+    void setMix(float mix_)
+    {
+        mix.setTargetValue (mix_);
+    }
 
     void reset()
     {
